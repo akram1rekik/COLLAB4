@@ -1,0 +1,33 @@
+script(src='/socket.io/socket.io.js')
+script(src='javascripts/chat.js')
+input#message(type='text')
+button(onclick='send()').
+    send
+br
+br
+br
+div#content
+script(type='text/javascript').
+    var socket = io.connect("http://192.168.1.4:8181");
+    var room='test';
+    if (room !== '') {
+        console.log('Create or join room', room);
+        socket.emit('create or join', room);
+    }
+    function send(){
+        var t= document.getElementById('message').value;
+        var b= document.getElementById('content');
+        b.innerHTML+= '<b>' + 'Me :' + '</b>' + t + '<br>';
+        var msg= "#{sessname}" + ": " + t;
+        socket.emit('message', msg);
+        console.log('Sending message: ', t);
+    }
+//    socket.on('message', function (message){
+//        console.log("get message: " + message);
+//        var b= document.getElementById('content');
+//        var k= message.indexOf("***");
+//        var sess = message.substring(0,k);
+//        var msg1= message.substring(k+3);
+//        b.innerHTML+=  '<b>'+ sess + '</b> ' + msg1 +'<br>';
+//    });
+
